@@ -13,31 +13,37 @@ sigma_alpha=alpha0^2/2;
 
 z=0:0.5:10;
 selected_index=10;
-%z_selected=z(selected_destance);
-nbins=30;
-power_percentage=70;
+power_percentage=80;
+
+
 %% draw samples
 alpha=normrnd(mu_alpha,sigma_alpha,[1 number_of_rays]);
 theta=low_theta+(high_theta-low_theta)*rand([1 number_of_rays]);
 
-%% find coordinates
-x= z'*tan(alpha).*cos(theta);
-y=z'*tan(alpha).*sin(theta);
-r=x+1i*y;
-selected_r=r(selected_index,:);
-data=sort(abs(selected_r));
-threshold=ceil(length(data)*power_percentage/100);
-
-%% show the result
-figure
-polarplot(selected_r,'*')
-title('2D plot in a specefic distance')
+%% check the actual distribution of parameters
+nbins=30;
 figure
 histogram(alpha,nbins)
 title('alpha normal')
 figure
 histogram(theta,nbins)
 title('theta uniform')
+
+%% find coordinates
+x= transpose(z)*tan(alpha).*cos(theta);
+y=transpose(z)*tan(alpha).*sin(theta);
+r=x+1i*y;
+hole_raduises=find_hole_radius(r,power_percentage);
+r_tmp = transpose(hole_raduises);
+selected_radius=r_tmp(selected_index);
+%% show the result
+%2D plot for
+figure
+polarplot(r(selected_index,:),'*')
+hold on
+angle = linspace(0,2*pi,50);
+polarplot(angle,selected_radius+zeros(size(angle)))
+title('2D plot in a specefic distance')
 figure
 plot3(x,y,z)
 title('3D propagation')

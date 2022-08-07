@@ -4,7 +4,7 @@ clc
 %% variables
 %variables can be changed depending on the laser and other conditions as desired
 
-number_of_rays=10000;
+number_of_rays=3000;
 %the more the rays are the more accurate the result will be
 
 %alpha is the angle of y according to x for each ray
@@ -21,7 +21,7 @@ sigma_alpha=theta0^2/2;
 %the beam propagation in z direction
 z=0:0.5:10;
 selected_index=10;
-power_percentage=80;
+power_percentage=70;
 %random nembers for now
 
 %% draw samples
@@ -44,9 +44,8 @@ x= transpose(z)*tan(theta).*cos(alpha);
 y=transpose(z)*tan(theta).*sin(alpha);
 r=x+1i*y;
 
-%% find the suitable iris dimensions comparing to the distance and the laser
+%% find the suitable iris dimensions
 iris_radii=find_hole_radius(r,power_percentage);
-
 %% 2D plot 
 r_tmp = transpose(iris_radii);
 selected_radius=r_tmp(selected_index);
